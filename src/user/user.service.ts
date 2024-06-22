@@ -1,13 +1,18 @@
 import { Injectable } from '@nestjs/common';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { User } from './interfaces/user.interface';
 import { CreateUserdto } from './interfaces/dto/createUser-dto';
+import { Product } from 'src/products/interfaces/product.interface';
+import { ProductService } from 'src/products/product.service';
 import * as bcrypt from 'bcryptjs';
 
 @Injectable()
 export class UserService {
-  constructor(@InjectModel('User') private readonly userModel: Model<User>) {}
+  constructor(
+  @InjectModel('User') private readonly userModel: Model<User>,
+  @InjectModel('Product') private readonly productModel: Model<Product>,
+  private readonly productService: ProductService,) {}
 
   async getUsers(): Promise<User[]> {
     return await this.userModel.find().exec();

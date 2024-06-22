@@ -1,8 +1,20 @@
-import * as mongoose from 'mongoose';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Document } from 'mongoose';
 
-export const ProductSchema = new mongoose.Schema({
-    name: { type: String, required: true, trim: true, unique: true },
-    description: { type: String, required: true, trim: true }, 
-    photo: { type: String },
-    count: {type : Number, required: true, min: 1, max: 1000 }
-})
+@Schema()
+export class Product {
+    @Prop({ required: true, trim: true, unique: true })
+    name: string;
+
+    @Prop({ required: true, trim: true })
+    description: string;
+
+    @Prop({ required: true, trim: true })
+    count: number;
+
+    @Prop()
+    photo: string;
+}
+
+export type ProductDocument = Product & Document;
+export const ProductSchema = SchemaFactory.createForClass(Product)
